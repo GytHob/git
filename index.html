@@ -22,6 +22,8 @@
 		
 		var _currentLevel;
 		var _currentPiece;
+		
+		var click = ('ontouchstart' in document.documentElement)  ? 'touchstart' : 'mousedown';
 
         function init(){
             _img = new Image();
@@ -70,8 +72,10 @@
             _stage.fillText(msg,_puzzleWidth / 2,_puzzleHeight - 20);
         }
         function buildPieces(){
-            document.onmousedown = onPuzzleClick;
-            document.touchstart = onPuzzleClick;
+			document.on('touchstart mousedown', function(e) {
+				e.preventDefault();
+				onPuzzleClick(e);
+			});
         }
         
         function onPuzzleClick(e){
