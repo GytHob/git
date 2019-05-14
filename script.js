@@ -23,7 +23,7 @@ function init() {
 }
 
 function onImage() {
-    _puzzleWidth = 1000;
+    _puzzleWidth = 800;
     _puzzleHeight = _puzzleWidth * _img.height / _img.width;
     setCanvas();
     initPuzzle();
@@ -63,8 +63,8 @@ function buildPieces() {
 
     switch (_currentLevel) {
         case 1:
-            var w = 1000;
-            var h = 1778;
+            var w = _puzzleWidth;
+            var h = _puzzleWidth * 1.778;
             _pieces = [{x:0.49*w, y:0.64*h, r:0.15*w}, {x:0.88*w, y:0.67*h, r:0.1*w}, {x:0.48*w, y:0.33*h, r:0.04*w}, {x:0.26*w, y:0.2*h, r:0.05*w}, {x:0.94*w, y:0.3*h, r:0.15*w}];
             break;
         case 2:
