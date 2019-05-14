@@ -77,12 +77,6 @@ function buildPieces() {
     for (var i = 0; i < _pieces.length; i++) {
         var piece = _pieces[i];
         piece.hit = false;
-
-        _stage.lineWidth = 2;
-        _stage.strokeStyle = '#ccff00';
-        _stage.beginPath();
-        _stage.arc(piece.x, piece.y, piece.r, 0, 2 * Math.PI);
-        _stage.stroke();
     }
 
     document.addEventListener("touchstart", touchHandler, true);
@@ -130,6 +124,24 @@ function onPuzzleClick(e) {
         _mouse.y = e.offsetY - _canvas.offsetTop;
     }
     _currentPiece = checkPieceClicked();
+
+    var hits = 0;
+    for (var i = 0; i < _pieces.length; i++) {
+        var piece = _pieces[i];
+        if (piece.hit) {
+            _stage.lineWidth = 2;
+            _stage.strokeStyle = '#ccff00';
+            _stage.beginPath();
+            _stage.arc(piece.x, piece.y, piece.r, 0, 2 * Math.PI);
+            _stage.stroke();
+            hits++;
+        }
+    }
+
+    if (hits === 5) {
+        document.getElementById("test").innerHTML = "win!";
+    }
+
     if (_currentPiece != null) {
         // _stage.clearRect(_currentPiece.x, _currentPiece.y, _pieceRadius, _pieceRadius);
         // _stage.save();
@@ -162,14 +174,9 @@ function checkPieceClicked() {
             //PIECE NOT HIT
         } else {
             piece.hit = true;
-            hits++;
-            if (hits === 5) {
-                document.getElementById("test").innerHTML = "win!";
-            }
             return piece;
         }
     }
 
-    document.getElementById("test").innerHTML = "miss, hits:" + hits;
     return null;
 }
