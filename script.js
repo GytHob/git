@@ -23,7 +23,7 @@ function init() {
 }
 
 function onImage() {
-    _puzzleWidth = 800;
+    _puzzleWidth = 900;
     _puzzleHeight = _puzzleWidth * _img.height / _img.width;
     setCanvas();
     initPuzzle();
