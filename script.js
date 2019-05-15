@@ -19,7 +19,8 @@ var _currentLevel;
 function init() {
     _img = new Image();
     _img.addEventListener('load', onImage, false);
-    _img.src = "1.jpg"
+    _currentLevel = 3;
+    _img.src = _currentLevel + ".jpg";
 }
 
 function onImage() {
@@ -41,8 +42,7 @@ function initPuzzle() {
     _pieces = [];
     _mouse = {x: 0, y: 0};
     _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleWidth * _img.height / _img.width);
-    createTitle("Click to Start Puzzle");
-    _currentLevel = 1;
+    // createTitle("Click to Start Puzzle");
     buildPieces();
 }
 
@@ -60,15 +60,29 @@ function createTitle(msg) {
 
 function buildPieces() {
     // 1 = "1000x1778"
+    w = _puzzleWidth;
+    var h = _puzzleWidth * 1.778;
 
     switch (_currentLevel) {
         case 1:
-            var w = _puzzleWidth;
-            var h = _puzzleWidth * 1.778;
+            h = _puzzleWidth * 1.778;
             _pieces = [{x:0.49*w, y:0.64*h, r:0.15*w}, {x:0.88*w, y:0.67*h, r:0.1*w}, {x:0.48*w, y:0.33*h, r:0.04*w}, {x:0.26*w, y:0.2*h, r:0.05*w}, {x:0.94*w, y:0.3*h, r:0.15*w}];
             break;
         case 2:
-            _pieces = [];
+            h = _puzzleWidth * (3024/4032);
+            _pieces = [{x:0.02*w, y:0.57*h, r:0.05*w}, {x:0.50*w, y:0.55*h, r:0.04*w}, {x:0.45*w, y:0.21*h, r:0.04*w}, {x:0.84*w, y:0.93*h, r:0.03*w}, {x:0.16*w, y:0.32*h, r:0.1*w}];
+            break;
+        case 3:
+            h = _puzzleWidth * (4032/3024);
+            _pieces = [{x:0.06*w, y:0.45*h, r:0.04*w}, {x:0.25*w, y:0.32*h, r:0.06*w}, {x:0.547*w, y:0.407*h, r:0.12*w}, {x:0.92*w, y:0.856*h, r:0.07*w}, {x:0.53*w, y:0.96*h, r:0.14*w}];
+            break;
+        case 4:
+            h = _puzzleWidth * (3024/4032);
+            _pieces = [{x:0.11*w, y:0.11*h, r:0.15*w}, {x:0.11*w, y:0.11*h, r:0.1*w}, {x:0.11*w, y:0.11*h, r:0.04*w}, {x:0.11*w, y:0.11*h, r:0.05*w}, {x:0.11*w, y:0.11*h, r:0.15*w}];
+            break;
+        case 5:
+            h = _puzzleWidth * (1440/1080);
+            _pieces = [{x:0.11*w, y:0.11*h, r:0.15*w}, {x:0.11*w, y:0.11*h, r:0.1*w}, {x:0.11*w, y:0.11*h, r:0.04*w}, {x:0.11*w, y:0.11*h, r:0.05*w}, {x:0.11*w, y:0.11*h, r:0.15*w}];
             break;
         default:
             _pieces = null;
