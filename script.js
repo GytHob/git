@@ -19,7 +19,7 @@ var _currentLevel;
 function init() {
     _img = new Image();
     _img.addEventListener('load', onImage, false);
-    _currentLevel = 3;
+    _currentLevel = 5;
     _img.src = _currentLevel + ".jpg";
 }
 
@@ -77,12 +77,12 @@ function buildPieces() {
             _pieces = [{x:0.06*w, y:0.45*h, r:0.04*w}, {x:0.25*w, y:0.32*h, r:0.06*w}, {x:0.547*w, y:0.407*h, r:0.12*w}, {x:0.92*w, y:0.856*h, r:0.07*w}, {x:0.53*w, y:0.96*h, r:0.14*w}];
             break;
         case 4:
-            h = _puzzleWidth * (3024/4032);
-            _pieces = [{x:0.11*w, y:0.11*h, r:0.15*w}, {x:0.11*w, y:0.11*h, r:0.1*w}, {x:0.11*w, y:0.11*h, r:0.04*w}, {x:0.11*w, y:0.11*h, r:0.05*w}, {x:0.11*w, y:0.11*h, r:0.15*w}];
+            h = _puzzleWidth * (495/880);
+            _pieces = [{x:0.89*w, y:0.71*h, r:0.07*w}, {x:0.50*w, y:0.44*h, r:0.02*w}, {x:0.60*w, y:0.635*h, r:0.04*w}, {x:0.68*w, y:0.92*h, r:0.1*w}, {x:0.75*w, y:0.08*h, r:0.05*w}];
             break;
         case 5:
             h = _puzzleWidth * (1440/1080);
-            _pieces = [{x:0.11*w, y:0.11*h, r:0.15*w}, {x:0.11*w, y:0.11*h, r:0.1*w}, {x:0.11*w, y:0.11*h, r:0.04*w}, {x:0.11*w, y:0.11*h, r:0.05*w}, {x:0.11*w, y:0.11*h, r:0.15*w}];
+            _pieces = [{x:0.056*w, y:0.236*h, r:0.03*w}, {x:0.347*w, y:0.66*h, r:0.03*w}, {x:0.66*w, y:0.07*h, r:0.1*w}, {x:0.265*w, y:0.88*h, r:0.07*w}, {x:0.51*w, y:0.285*h, r:0.02*w}];
             break;
         default:
             _pieces = null;
