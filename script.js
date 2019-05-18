@@ -20,8 +20,6 @@ var _endingImage;
 var _endingMessage;
 var _clickToRestart;
 
-var _mouseMoved = false;
-
 // var click = ('ontouchstart' in document.documentElement) ? 'touchstart' : 'mousedown';
 
 function init() {
@@ -93,23 +91,48 @@ function buildPieces() {
     switch (_currentLevel) {
         case 1:
             h = _puzzleWidth * 1.778;
-            _pieces = [{x:0.49*w, y:0.64*h, r:0.15*w}, {x:0.88*w, y:0.67*h, r:0.1*w}, {x:0.48*w, y:0.33*h, r:0.04*w}, {x:0.26*w, y:0.2*h, r:0.05*w}, {x:0.94*w, y:0.3*h, r:0.15*w}];
+            _pieces = [
+                {x:0.49*w, y:0.64*h, r:0.15*w},
+                {x:0.88*w, y:0.67*h, r:0.10*w},
+                {x:0.48*w, y:0.33*h, r:0.04*w},
+                {x:0.26*w, y:0.20*h, r:0.05*w},
+                {x:0.94*w, y:0.30*h, r:0.15*w}];
             break;
         case 2:
             h = _puzzleWidth * (3024/4032);
-            _pieces = [{x:0.02*w, y:0.57*h, r:0.05*w}, {x:0.50*w, y:0.55*h, r:0.04*w}, {x:0.45*w, y:0.21*h, r:0.04*w}, {x:0.84*w, y:0.93*h, r:0.03*w}, {x:0.16*w, y:0.32*h, r:0.1*w}];
+            _pieces = [
+                {x:0.02*w, y:0.57*h, r:0.05*w},
+                {x:0.50*w, y:0.55*h, r:0.04*w},
+                {x:0.45*w, y:0.21*h, r:0.04*w},
+                {x:0.84*w, y:0.93*h, r:0.04*w},
+                {x:0.16*w, y:0.32*h, r:0.1*w}];
             break;
         case 3:
             h = _puzzleWidth * (4032/3024);
-            _pieces = [{x:0.06*w, y:0.45*h, r:0.04*w}, {x:0.25*w, y:0.32*h, r:0.06*w}, {x:0.547*w, y:0.407*h, r:0.12*w}, {x:0.92*w, y:0.856*h, r:0.07*w}, {x:0.53*w, y:0.96*h, r:0.14*w}];
+            _pieces = [
+                {x:0.060*w, y:0.450*h, r:0.04*w},
+                {x:0.250*w, y:0.320*h, r:0.06*w},
+                {x:0.547*w, y:0.407*h, r:0.12*w},
+                {x:0.920*w, y:0.856*h, r:0.07*w},
+                {x:0.530*w, y:0.960*h, r:0.14*w}];
             break;
         case 4:
             h = _puzzleWidth * (495/880);
-            _pieces = [{x:0.89*w, y:0.71*h, r:0.07*w}, {x:0.50*w, y:0.44*h, r:0.02*w}, {x:0.60*w, y:0.635*h, r:0.04*w}, {x:0.68*w, y:0.92*h, r:0.1*w}, {x:0.75*w, y:0.08*h, r:0.05*w}];
+            _pieces = [
+                {x:0.89*w, y:0.710*h, r:0.07*w},
+                {x:0.50*w, y:0.440*h, r:0.04*w},
+                {x:0.60*w, y:0.635*h, r:0.04*w},
+                {x:0.68*w, y:0.920*h, r:0.10*w},
+                {x:0.75*w, y:0.080*h, r:0.05*w}];
             break;
         case 5:
             h = _puzzleWidth * (1440/1080);
-            _pieces = [{x:0.056*w, y:0.236*h, r:0.03*w}, {x:0.347*w, y:0.66*h, r:0.03*w}, {x:0.66*w, y:0.07*h, r:0.1*w}, {x:0.265*w, y:0.88*h, r:0.07*w}, {x:0.51*w, y:0.285*h, r:0.02*w}];
+            _pieces = [
+                {x:0.056*w, y:0.236*h, r:0.04*w},
+                {x:0.347*w, y:0.660*h, r:0.04*w},
+                {x:0.660*w, y:0.070*h, r:0.10*w},
+                {x:0.265*w, y:0.880*h, r:0.10*w},
+                {x:0.510*w, y:0.285*h, r:0.04*w}];
             break;
         default:
             _pieces = null;
@@ -159,11 +182,9 @@ function touchHandler(event) {
 
 
 function onPuzzleMouseMove() {
-    _mouseMoved = true;
 }
 
 function onPuzzleMouseDown(e) {
-    _mouseMoved = false;
     if (e.layerX || e.layerX === 0) {
         _mouse.x = e.layerX - _canvas.offsetLeft;
         _mouse.y = e.layerY - _canvas.offsetTop;
@@ -174,7 +195,20 @@ function onPuzzleMouseDown(e) {
 }
 
 function onPuzzleMouseUp(e) {
-    if (_mouseMoved) {
+    var mouse = {};
+    if (e.layerX || e.layerX === 0) {
+        mouse.x = e.layerX - _canvas.offsetLeft;
+        mouse.y = e.layerY - _canvas.offsetTop;
+    } else if (e.offsetX || e.offsetX === 0) {
+        mouse.x = e.offsetX - _canvas.offsetLeft;
+        mouse.y = e.offsetY - _canvas.offsetTop;
+    }
+
+    var a = _mouse.x - mouse.x;
+    var b = _mouse.y - mouse.y;
+    var c = Math.sqrt( a*a + b*b );
+
+    if (c > 5) { // mouse moved too much
         return;
     }
 
@@ -184,7 +218,7 @@ function onPuzzleMouseUp(e) {
         var piece = _pieces[i];
         if (piece.hit) {
             _stage.lineWidth = 2;
-            _stage.strokeStyle = '#ccff00';
+            _stage.strokeStyle = '#00ffff';
             _stage.beginPath();
             _stage.arc(piece.x, piece.y, piece.r, 0, 2 * Math.PI);
             _stage.stroke();
