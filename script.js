@@ -20,6 +20,8 @@ var _endingImage;
 var _endingMessage;
 var _clickToRestart;
 
+var _mouseMoved = false;
+
 // var click = ('ontouchstart' in document.documentElement) ? 'touchstart' : 'mousedown';
 
 function init() {
@@ -83,7 +85,6 @@ function drawImageOnLoad(img, x, y, src, size) {
     };
 }
 
-
 function buildPieces() {
     // 1 = "1000x1778"
     w = _puzzleWidth;
@@ -123,7 +124,9 @@ function buildPieces() {
     document.addEventListener("touchmove", touchHandler, true);
     document.addEventListener("touchend", touchHandler, true);
     document.addEventListener("touchcancel", touchHandler, true);
-    document.onmousedown = onPuzzleClick;
+    document.onmousedown = onPuzzleMouseDown;
+    document.onmousemove = onPuzzleMouseMove;
+    document.onmouseup = onPuzzleMouseUp;
 }
 
 function touchHandler(event) {
@@ -155,7 +158,12 @@ function touchHandler(event) {
 }
 
 
-function onPuzzleClick(e) {
+function onPuzzleMouseMove() {
+    _mouseMoved = true;
+}
+
+function onPuzzleMouseDown(e) {
+    _mouseMoved = false;
     if (e.layerX || e.layerX === 0) {
         _mouse.x = e.layerX - _canvas.offsetLeft;
         _mouse.y = e.layerY - _canvas.offsetTop;
@@ -163,8 +171,14 @@ function onPuzzleClick(e) {
         _mouse.x = e.offsetX - _canvas.offsetLeft;
         _mouse.y = e.offsetY - _canvas.offsetTop;
     }
-    _currentPiece = checkPieceClicked();
+}
 
+function onPuzzleMouseUp(e) {
+    if (_mouseMoved) {
+        return;
+    }
+
+    _currentPiece = checkPieceClicked();
     var hits = 0;
     for (var i = 0; i < _pieces.length; i++) {
         var piece = _pieces[i];
@@ -184,14 +198,6 @@ function onPuzzleClick(e) {
         } else {
             nextLevel();
         }
-    }
-
-    if (_currentPiece != null) {
-        // _stage.clearRect(_currentPiece.x, _currentPiece.y, _pieceRadius, _pieceRadius);
-        // _stage.save();
-        // _stage.globalAlpha = .9;
-        // _stage.drawImage(_img, _currentPiece.x, _currentPiece.y, _pieceRadius, _pieceRadius, _mouse.x - (_pieceRadius / 2), _mouse.y - (_pieceRadius / 2), _pieceRadius, _pieceRadius);
-        // _stage.restore();
     }
 }
 
