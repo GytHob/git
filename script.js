@@ -14,12 +14,28 @@ var _currentPiece;
 
 var _currentLevel;
 
+var _lives;
+var _liveImgs;
+var _endingImage;
+var _endingMessage;
+var _clickToRestart;
+
 // var click = ('ontouchstart' in document.documentElement) ? 'touchstart' : 'mousedown';
 
 function init() {
+    document.getElementById("welcome").style.display = "none";
+    _currentLevel = 1;
+    _lives = 5;
+    _pieces = {};
+    _endingImage = document.getElementById("gif");
+    _endingImage.src = "";
+    _clickToRestart = false;
+    loadImage();
+}
+
+function loadImage() {
     _img = new Image();
     _img.addEventListener('load', onImage, false);
-    _currentLevel = 5;
     _img.src = _currentLevel + ".jpg";
 }
 
@@ -42,21 +58,31 @@ function initPuzzle() {
     _pieces = [];
     _mouse = {x: 0, y: 0};
     _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleWidth * _img.height / _img.width);
-    // createTitle("Click to Start Puzzle");
     buildPieces();
+    drawLives();
 }
 
-function createTitle(msg) {
-    _stage.fillStyle = "#000000";
-    _stage.globalAlpha = .4;
-    _stage.fillRect(100, _puzzleHeight - 40, _puzzleWidth - 200, 40);
-    _stage.fillStyle = "#FFFFFF";
-    _stage.globalAlpha = 1;
-    _stage.textAlign = "center";
-    _stage.textBaseline = "middle";
-    _stage.font = "20px Arial";
-    _stage.fillText(msg, _puzzleWidth / 2, _puzzleHeight - 20);
+function drawLives() {
+    var size = 50;
+    var x = 10;
+    var y = 10;
+    _liveImgs = [];
+    for (var i = 0; i < 5; i++) {
+        var img = new Image();
+        drawImageOnLoad(img, x, y, _lives > i ? "carrot-on.png" : "carrot-off.png", size);
+        _liveImgs.push(img);
+        x += size;
+    }
 }
+
+function drawImageOnLoad(img, x, y, src, size) {
+    img.style.zIndex = "2";
+    img.src = src;
+    img.onload = function() {
+        _stage.drawImage(img, x, y, size, size);
+    };
+}
+
 
 function buildPieces() {
     // 1 = "1000x1778"
@@ -153,7 +179,11 @@ function onPuzzleClick(e) {
     }
 
     if (hits === 5) {
-        document.getElementById("test").innerHTML = "win!";
+        if (_currentLevel === 5) {
+            win();
+        } else {
+            nextLevel();
+        }
     }
 
     if (_currentPiece != null) {
@@ -166,6 +196,11 @@ function onPuzzleClick(e) {
 }
 
 function checkPieceClicked() {
+    if (_clickToRestart) {
+        location.reload();
+        return;
+    }
+
     var i;
     var hits = 0;
     var piece;
@@ -184,13 +219,58 @@ function checkPieceClicked() {
         var b = _mouse.y - piece.y;
         var c = Math.sqrt( a*a + b*b );
 
-        if (c > piece.r) {
-            //PIECE NOT HIT
-        } else {
+        if (c <= piece.r) {
             piece.hit = true;
             return piece;
         }
     }
 
+    _lives--;
+    drawLives();
+    if (_lives <= 0) {
+        lose();
+    }
+
     return null;
 }
+
+
+function nextLevel() {
+    setTimeout(function () {
+        _currentLevel++;
+        loadImage();
+    }, 500);
+}
+
+function onLoadEndingGif() {
+    _endingImage.style.left = (_canvas.width/2 - _endingImage.width/2) + "px";
+    _endingImage.style.top = (_canvas.height/2 - _endingImage.height/2) + "px";
+    _clickToRestart = true;
+    createTitle(_endingMessage);
+}
+
+function win() {
+    _endingImage.src = "win.gif";
+    _endingImage.addEventListener('load', onLoadEndingGif, false);
+    _endingMessage ="YOU WIN! 정말 천재해요!";
+}
+
+function lose() {
+    _endingImage.src = "lose.gif";
+    _endingImage.addEventListener('load', onLoadEndingGif, false);
+    _endingMessage ="You lose.. 다시 해 보세요!";
+}
+
+function createTitle(msg){
+    _stage.fillStyle = "#000000";
+    _stage.globalAlpha = .4;
+    _stage.fillRect(50,40,_puzzleWidth - 100,_puzzleHeight - 80);
+    _stage.fillStyle = "#FFFFFF";
+    _stage.globalAlpha = 1;
+    _stage.textAlign = "center";
+    _stage.textBaseline = "middle";
+    _stage.font = "60px Arial";
+    _stage.fillText(msg,_puzzleWidth / 2, (_canvas.height/2 - _endingImage.height/2) - 60);
+}
+
+

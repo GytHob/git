@@ -1,14 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        .center {
+            text-align: center;
+            font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; font-size: 24px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26px;
+        }
+        .btn {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 10px;
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            margin:10px;
+            width:20%;
+            height:20%;
+        }
+
+        .small-btn {
+            width: 50px;
+            height: 25px;
+        }
+
+        .medium-btn {
+            width: 70px;
+            height: 30px;
+        }
+
+        .big-btn {
+            width: 1000px;
+            height: 40px;
+        }
+
+    </style>
     <meta charset="utf-8"/>
     <title>Happy Anniversary</title>
     <script src="script.js"></script>
 </head>
 
-<body onload="init();">
+<body>
     <canvas id="canvas"></canvas>
-    <div id="test"></div>
+    <img id="gif" style="position: absolute; left: 0; top: 0; z-index: 1;"/>
+    <div id="lives" style="position: absolute; left: 0; top: 0; z-index: 1;"></div>
+    <div id="welcome" class="center">
+        <h1>Happy Anniversary</h1>
+        <h2>Made with 💖 by 에디 for 형경, May 2019</h2>
+        <h4>This is a picture game.</h4>
+        <h4>The goal is to find five odd things in each picture and click them!</h4>
+        <h4>There are five levels in total. You have five lives but there is no time limit.</h4>
+        <h4>If you get stuck, check the original picture. Good luck!</h4>
+        <button class="btn" class="big-btn" onclick="init()">PLAY</button>
+    </div>
 </body>
 
 </html>
